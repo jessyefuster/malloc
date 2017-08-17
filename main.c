@@ -1,21 +1,35 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   malloc.c                                           :+:      :+:    :+:   */
+/*   main.c                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: jfuster <jfuster@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2017/08/16 12:15:35 by jfuster           #+#    #+#             */
-/*   Updated: 2017/08/16 15:54:37 by jfuster          ###   ########.fr       */
+/*   Created: 2017/08/16 15:09:37 by jfuster           #+#    #+#             */
+/*   Updated: 2017/08/17 19:20:08 by jfuster          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include <string.h>
-#include <sys/mman.h>
+#include <stdio.h>
 
-void	*malloc(size_t size)
+int		main(void)
 {
-	return (mmap(0, size, PROT_READ | PROT_WRITE, MAP_ANON | MAP_PRIVATE, -1, 0));
-	// size = 0;
-	// return (0);
+	char	*str;
+	size_t	size = 5;
+
+	str = (char *)malloc(sizeof(char) * size);
+
+	size_t	i = 0;
+	while (i < size)
+	{
+		str[i] = '*';
+		i++;
+	}
+	str[i] = 0;
+
+	printf("%s\n", str);
+
+	printf("%d\n", str);
+
+	return (0);
 }

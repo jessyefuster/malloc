@@ -1,21 +1,24 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   malloc.c                                           :+:      :+:    :+:   */
+/*   malloc.h                                           :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: jfuster <jfuster@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2017/08/16 12:15:35 by jfuster           #+#    #+#             */
-/*   Updated: 2017/08/16 15:54:37 by jfuster          ###   ########.fr       */
+/*   Created: 2017/08/17 15:17:58 by jfuster           #+#    #+#             */
+/*   Updated: 2017/08/17 20:17:31 by jfuster          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include <string.h>
-#include <sys/mman.h>
+#ifndef MALLOC_H
+# define MALLOC_H
 
-void	*malloc(size_t size)
-{
-	return (mmap(0, size, PROT_READ | PROT_WRITE, MAP_ANON | MAP_PRIVATE, -1, 0));
-	// size = 0;
-	// return (0);
-}
+# include <string.h>
+# include <sys/mman.h>
+
+# define TINY_SIZE 128
+# define SMALL_SIZE 1024
+# define TINY_PAGE_SIZE 0
+# define SMALL_PAGE_SIZE 0
+
+# endif
