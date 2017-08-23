@@ -6,7 +6,7 @@
 /*   By: jfuster <jfuster@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/08/17 15:17:58 by jfuster           #+#    #+#             */
-/*   Updated: 2017/08/23 15:17:29 by jfuster          ###   ########.fr       */
+/*   Updated: 2017/08/23 19:14:26 by jfuster          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -26,6 +26,11 @@
 # define P_DATA(page)			(void *)(page + 1)
 # define B_DATA(block)			(void *)(block + 1)
 
+# define P_META_SIZE			sizeof(t_page)
+# define B_META_SIZE			sizeof(t_block)
+
+// # define mmap(a, b, c, d, e, f)	NULL
+
 typedef enum		e_pagetype
 {
 	TINY,
@@ -36,6 +41,8 @@ typedef enum		e_pagetype
 typedef struct		s_page
 {
 	t_pagetype		type;
+	size_t			size;
+	size_t			busy;
 
 	struct s_block	*blocks;
 	struct s_page	*next;
@@ -61,12 +68,16 @@ t_page				**real_first_page(void);
 t_page				*first_page(void);
 t_page				*create_page(size_t pagesize);
 t_page				*alloc_page(size_t pagesize);
+void				init_page(t_page *page, size_t pagesize);
 void				add_page(t_page *new_page);
 
 /*
 **	block.c
 */
-t_block				*add_block_in_page(t_page *page, size_t block_size);
+void				init_block(t_block *block, size_t block_size);
+t_block				*add_block_in_mem(void *adress);
+void				add_block_to_page(t_page *page, t_block *new_block);
+t_block				*add_block(t_page *page, size_t block_size);
 
 /*
 **	size.c

@@ -6,7 +6,7 @@
 /*   By: jfuster <jfuster@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/08/16 15:09:37 by jfuster           #+#    #+#             */
-/*   Updated: 2017/08/23 15:31:21 by jfuster          ###   ########.fr       */
+/*   Updated: 2017/08/23 18:38:32 by jfuster          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,6 +16,38 @@
 #include <stdlib.h>
 #include "includes/malloc.h"
 
+char	*pagetype_str(t_pagetype type)
+{
+	if (type == TINY)
+		return ("TINY");
+	else if (type == SMALL)
+		return ("SMALL");
+	else
+		return ("LARGE");
+}
+
+void	show_alloc_mem(void)
+{
+	size_t	total = 0;
+	t_page	*page;
+	t_block	*block;
+
+	page = first_page();
+	while (page)
+	{
+		printf("%s : %p\n", pagetype_str(page->type), P_DATA(page));
+		block = page->blocks;
+		while (block)
+		{
+			printf("%p - %p : %zu octets\n", B_DATA(block), B_DATA(block) + block->size - 1, block->size);
+			total += block->size;
+			block = block->next;
+			// printf("\n");
+		}
+		page = page->next;
+	}
+	printf("Total : %zu octets\n", total);
+}
 
 void	*my_malloc(size_t size)
 {
@@ -24,8 +56,10 @@ void	*my_malloc(size_t size)
 	new_block = search_free_block(size);
 	if (!new_block)
 		new_block = create_block(size, NULL);
+	if (!new_block)
+		return (NULL);
 
-	return (new_block);
+	return (B_DATA(new_block));
 }
 
 int		main(void)
@@ -37,10 +71,14 @@ int		main(void)
 
 	void	*ptr;
 
-	ptr = my_malloc(5);
-	ptr = my_malloc(8);
+	my_malloc(5);
+	my_malloc(8);
+	my_malloc(200);
+	my_malloc(2000);
 
-	printf("%p\n", ptr);
+	show_alloc_mem();
+	// printf("%p\n", ptr);
+	// printf("%zu\n", sizeof(int*));
 
 	return (0);
 }

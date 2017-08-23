@@ -6,21 +6,41 @@
 /*   By: jfuster <jfuster@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/08/16 12:15:35 by jfuster           #+#    #+#             */
-/*   Updated: 2017/08/23 15:18:41 by jfuster          ###   ########.fr       */
+/*   Updated: 2017/08/23 19:20:04 by jfuster          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../includes/malloc.h"
 
+void		*space_left(t_page *page, size_t block_size)
+{
+	void		*after_page;
+	void		*after_last_block;
+	t_block		*block;
+
+	block = page->blocks;
+	while (block->next)
+		block = block->next;
+
+	after_page = P_DATA(page) + page->size;
+	after_last_block = B_DATA(block) + block->size;
+
+	if (after_page - after_last_block >= (block_size + B_META_SIZE))
+		return (after_last_block);
+	return (NULL);
+}
+
 t_block		*search_free_block(size_t block_size)
 {
-	t_page		*pages;
+	t_page		*page;
 
-	pages = first_page();
-	while (pages)
+	page = first_page();
+	while (page)
 	{
-		// IF SPACE AVAILABLE IN 
-		pages = pages->next;
+		if (page->type == pagetype_from_block(block_size))
+			if (space_left(page, block_size))
+				return (add_block(page, block_size));
+		page = page->next;
 	}
 
 	return (NULL);
@@ -37,7 +57,7 @@ t_block		*create_block(size_t block_size, t_page *page)
 		page = create_page(pagesize);
 	}
 
-	block = add_block_in_page(page, block_size);
+	block = add_block(page, block_size);
 
 	return (block);
 }
