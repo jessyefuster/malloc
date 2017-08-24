@@ -6,23 +6,11 @@
 /*   By: jfuster <jfuster@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/08/23 13:11:06 by jfuster           #+#    #+#             */
-/*   Updated: 2017/08/23 19:23:33 by jfuster          ###   ########.fr       */
+/*   Updated: 2017/08/24 19:11:23 by jfuster          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../includes/malloc.h"
-
-t_page		**real_first_page(void)
-{
-	static t_page	*first = NULL;
-
-	return (&first);
-}
-
-t_page		*first_page(void)
-{
-	return (*real_first_page());
-}
 
 t_page		*alloc_page(size_t pagesize)
 {
@@ -31,9 +19,9 @@ t_page		*alloc_page(size_t pagesize)
 
 	alloc_size = pagesize;
 	if (pagetype_from_pagesize(pagesize) == LARGE)
-		alloc_size += P_META_SIZE;
-	new_page = mmap(0, alloc_size, PROT_READ | PROT_WRITE, MAP_ANON | MAP_PRIVATE, -1, 0);
-
+		alloc_size += P_META_SIZE + B_META_SIZE;
+	new_page = mmap(0, alloc_size, PROT_READ | PROT_WRITE, \
+				MAP_ANON | MAP_PRIVATE, -1, 0);
 	return (new_page);
 }
 
@@ -76,4 +64,3 @@ t_page		*create_page(size_t pagesize)
 	}
 	return (new_page);
 }
-

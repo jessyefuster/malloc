@@ -6,15 +6,24 @@
 /*   By: jfuster <jfuster@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/08/23 13:32:54 by jfuster           #+#    #+#             */
-/*   Updated: 2017/08/23 19:00:07 by jfuster          ###   ########.fr       */
+/*   Updated: 2017/08/24 18:08:37 by jfuster          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../includes/malloc.h"
 
+t_block		*last_block(t_block *first)
+{
+	t_block		*ptr;
+
+	ptr = first;
+	while (ptr->next)
+		ptr = ptr->next;
+	return (ptr);
+}
+
 t_block		*add_block_in_mem(void *adress)
 {
-	printf("Adding block at:           %p\n\n", adress);
 	t_block		*block;
 
 	block = (t_block *)adress;
@@ -54,23 +63,14 @@ t_block		*add_block(t_page *page, size_t block_size)
 	if (!page)
 		return (NULL);
 	ptr = page->blocks;
-	if (ptr == NULL)
+	if (ptr)
 	{
-		printf("Empty page at:             %p\n", page);
-		printf("size of page:              %zu\n", sizeof(t_page));
-		block = add_block_in_mem(P_DATA(page));
+		ptr = last_block(ptr);
+		block = add_block_in_mem((B_AFTER(ptr)));
 	}
 	else
-	{
-		while (ptr->next != NULL)
-			ptr = ptr->next;
-		printf("Block existing in page at: %p\n", ptr);
-		printf("size of block:             %zu  +  %zu\n", sizeof(t_block), block_size);
-		block = add_block_in_mem((B_DATA(ptr) + ptr->size));
-	}
-
+		block = add_block_in_mem(P_DATA(page));
 	init_block(block, block_size);
 	add_block_to_page(page, block);
-
 	return (block);
 }

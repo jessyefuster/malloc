@@ -6,7 +6,7 @@
 /*   By: jfuster <jfuster@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/08/23 14:14:23 by jfuster           #+#    #+#             */
-/*   Updated: 2017/08/23 15:16:18 by jfuster          ###   ########.fr       */
+/*   Updated: 2017/08/24 19:11:41 by jfuster          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -30,7 +30,7 @@ size_t			pagesize_from_block(size_t block_size)
 	return (block_size);
 }
 
-size_t			pagetype_from_pagesize(size_t pagesize)
+t_pagetype		pagetype_from_pagesize(size_t pagesize)
 {
 	if (pagesize == TINY_PAGE_SIZE)
 		return (TINY);
@@ -47,4 +47,14 @@ size_t			pagesize_from_pagetype(t_pagetype type)
 		return (SMALL_PAGE_SIZE);
 	else
 		return (0);
+}
+
+char			*pagetype_str(t_pagetype type)
+{
+	if (type == TINY)
+		return ("TINY");
+	else if (type == SMALL)
+		return ("SMALL");
+	else
+		return ("LARGE");
 }
