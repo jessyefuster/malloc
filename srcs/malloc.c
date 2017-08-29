@@ -6,7 +6,7 @@
 /*   By: jfuster <jfuster@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/08/16 12:15:35 by jfuster           #+#    #+#             */
-/*   Updated: 2017/08/24 19:12:08 by jfuster          ###   ########.fr       */
+/*   Updated: 2017/08/29 12:40:31 by jfuster          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,14 +14,16 @@
 
 void		*space_left(t_page *page, size_t block_size)
 {
-	void		*after_page;
-	void		*after_last_block;
-	t_block		*block;
+	void			*after_page;
+	void			*after_last_block;
+	unsigned long	space_left;
+	t_block			*block;
 
 	block = last_block(page->blocks);
 	after_page = P_AFTER(page);
 	after_last_block = B_AFTER(block);
-	if (after_page - after_last_block >= (block_size + B_META_SIZE))
+	space_left = (unsigned long)(after_page - after_last_block);
+	if (space_left >= (block_size + B_META_SIZE))
 		return (after_last_block);
 	return (NULL);
 }

@@ -6,7 +6,7 @@
 /*   By: jfuster <jfuster@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/08/23 13:32:54 by jfuster           #+#    #+#             */
-/*   Updated: 2017/08/24 18:08:37 by jfuster          ###   ########.fr       */
+/*   Updated: 2017/08/29 16:15:03 by jfuster          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -51,6 +51,7 @@ void		init_block(t_block *block, size_t block_size)
 	if (block)
 	{
 		block->size = block_size;
+		block->free = 0;
 		block->next = NULL;
 	}
 }

@@ -6,7 +6,7 @@
 /*   By: jfuster <jfuster@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/08/17 15:17:58 by jfuster           #+#    #+#             */
-/*   Updated: 2017/08/24 18:58:38 by jfuster          ###   ########.fr       */
+/*   Updated: 2017/08/29 17:24:29 by jfuster          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -18,10 +18,10 @@
 # include <unistd.h>
 # include <sys/mman.h>
 
-# define TINY_ALLOC_SIZE	128
-# define SMALL_ALLOC_SIZE	1024
-# define TINY_PAGE_SIZE		getpagesize() * 2
-# define SMALL_PAGE_SIZE	getpagesize() * 16
+# define TINY_ALLOC_SIZE		(size_t)128
+# define SMALL_ALLOC_SIZE		(size_t)1024
+# define TINY_PAGE_SIZE			(size_t)(getpagesize() * 4)
+# define SMALL_PAGE_SIZE		(size_t)(getpagesize() * 32)
 
 # define P_DATA(page)			(void *)(page + 1)
 # define B_DATA(block)			(void *)(block + 1)
@@ -65,14 +65,6 @@ t_block				*create_block(size_t size, t_page *page);
 t_block				*search_free_block(size_t size);
 
 /*
-**	page.c
-*/
-t_page				*create_page(size_t pagesize);
-t_page				*alloc_page(size_t pagesize);
-void				init_page(t_page *page, size_t pagesize);
-void				add_page(t_page *new_page);
-
-/*
 **	block.c
 */
 t_block				*last_block(t_block *first);
@@ -80,6 +72,21 @@ void				init_block(t_block *block, size_t block_size);
 t_block				*add_block_in_mem(void *adress);
 void				add_block_to_page(t_page *page, t_block *new_block);
 t_block				*add_block(t_page *page, size_t block_size);
+
+/*
+**	free.c
+*/
+t_block				*search_ptr(void *ptr);
+void				my_free(void *ptr);
+
+/*
+**	page.c
+*/
+t_page				*create_page(size_t pagesize);
+t_page				*alloc_page(size_t pagesize);
+void				init_page(t_page *page, size_t pagesize);
+void				add_page(t_page *new_page);
+void				delete_page(t_page *to_del);
 
 /*
 **	root.c

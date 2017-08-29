@@ -6,7 +6,7 @@
 /*   By: jfuster <jfuster@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/08/16 15:09:37 by jfuster           #+#    #+#             */
-/*   Updated: 2017/08/24 15:51:57 by jfuster          ###   ########.fr       */
+/*   Updated: 2017/08/29 17:36:54 by jfuster          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,11 +14,20 @@
 
 int		main(void)
 {
-	my_malloc(5);
-	my_malloc(8);
-	my_malloc(200);
-	my_malloc(2000);
+	void	*addr;
 
+	my_malloc(5);
+	my_malloc(4);
+
+	my_malloc(200);
+
+	addr = my_malloc(2000);
+
+	show_alloc_mem();
+
+	my_free(addr);
+
+	ft_putstr("\n\n");
 	show_alloc_mem();
 	return (0);
 }
