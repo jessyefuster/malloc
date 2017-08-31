@@ -6,13 +6,13 @@
 /*   By: jfuster <jfuster@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/08/16 12:15:35 by jfuster           #+#    #+#             */
-/*   Updated: 2017/08/29 12:40:31 by jfuster          ###   ########.fr       */
+/*   Updated: 2017/08/30 17:12:38 by jfuster          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../includes/malloc.h"
 
-void		*space_left(t_page *page, size_t block_size)
+void		*space_left(t_page *page, size_t size)
 {
 	void			*after_page;
 	void			*after_last_block;
@@ -21,9 +21,12 @@ void		*space_left(t_page *page, size_t block_size)
 
 	block = last_block(page->blocks);
 	after_page = P_AFTER(page);
-	after_last_block = B_AFTER(block);
+	if (block)
+		after_last_block = B_AFTER(block);
+	else
+		after_last_block = P_DATA(page);
 	space_left = (unsigned long)(after_page - after_last_block);
-	if (space_left >= (block_size + B_META_SIZE))
+	if (space_left >= size)
 		return (after_last_block);
 	return (NULL);
 }
@@ -36,8 +39,10 @@ t_block		*search_free_block(size_t block_size)
 	while (page)
 	{
 		if (page->type == pagetype_from_block(block_size))
-			if (space_left(page, block_size))
+		{
+			if (space_left(page, block_size + B_META_SIZE))
 				return (add_block(page, block_size));
+		}
 		page = page->next;
 	}
 	return (NULL);

@@ -6,7 +6,7 @@
 /*   By: jfuster <jfuster@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/08/17 15:17:58 by jfuster           #+#    #+#             */
-/*   Updated: 2017/08/29 17:24:29 by jfuster          ###   ########.fr       */
+/*   Updated: 2017/08/30 18:56:44 by jfuster          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -30,6 +30,8 @@
 
 # define P_META_SIZE			sizeof(t_page)
 # define B_META_SIZE			sizeof(t_block)
+
+# define MIN(size_a, size_b)	(size_a >= size_b ? size_b : size_a)
 
 // # define mmap(a, b, c, d, e, f)	NULL
 
@@ -58,26 +60,31 @@ typedef struct		s_block
 	struct s_block	*next;
 }					t_block;
 
-void				*my_malloc(size_t size);
-
-
-t_block				*create_block(size_t size, t_page *page);
-t_block				*search_free_block(size_t size);
 
 /*
 **	block.c
 */
 t_block				*last_block(t_block *first);
 void				init_block(t_block *block, size_t block_size);
-t_block				*add_block_in_mem(void *adress);
+t_block				*block_from_address(void *adress);
 void				add_block_to_page(t_page *page, t_block *new_block);
 t_block				*add_block(t_page *page, size_t block_size);
 
 /*
 **	free.c
 */
-t_block				*search_ptr(void *ptr);
+int					page_is_free(t_page *page);
+void				unmap_page(t_page *page);
+void				clean_pages(t_pagetype pagetype);
 void				my_free(void *ptr);
+
+/*
+**	malloc.c
+*/
+void				*space_left(t_page *page, size_t size);
+t_block				*create_block(size_t size, t_page *page);
+t_block				*search_free_block(size_t size);
+void				*my_malloc(size_t size);
 
 /*
 **	page.c
@@ -93,6 +100,12 @@ void				delete_page(t_page *to_del);
 */
 t_page				**real_first_page(void);
 t_page				*first_page(void);
+
+/*
+**	search.c
+*/
+t_block				*search_ptr(void *ptr);
+t_page				*page_from_block(t_block *block);
 
 /*
 **	size.c
@@ -115,4 +128,6 @@ void				ft_putstr(char *str);
 char				*ft_utob(unsigned long long value, int base, char *base_str);
 void				ft_put_utob(unsigned long long value, int base, char *base_str);
 
+
+void	*my_realloc(void *ptr, size_t size);
 #endif

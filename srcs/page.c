@@ -6,7 +6,7 @@
 /*   By: jfuster <jfuster@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/08/23 13:11:06 by jfuster           #+#    #+#             */
-/*   Updated: 2017/08/29 17:23:10 by jfuster          ###   ########.fr       */
+/*   Updated: 2017/08/30 17:14:11 by jfuster          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -20,7 +20,6 @@ t_page		*alloc_page(size_t pagesize)
 	alloc_size = pagesize;
 	if (pagetype_from_pagesize(pagesize) == LARGE)
 		alloc_size += P_META_SIZE + B_META_SIZE;
-	// printf("%zu\n", alloc_size);
 	new_page = mmap(0, alloc_size, PROT_READ | PROT_WRITE, \
 				MAP_ANON | MAP_PRIVATE, -1, 0);
 	return (new_page);

@@ -6,39 +6,31 @@
 /*   By: jfuster <jfuster@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/08/29 12:11:07 by jfuster           #+#    #+#             */
-/*   Updated: 2017/08/29 17:34:59 by jfuster          ###   ########.fr       */
+/*   Updated: 2017/08/30 18:57:14 by jfuster          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../includes/malloc.h"
 
-t_page		*page_from_block(t_block *block)
+int			page_is_free(t_page *page)
 {
-	t_page	*pages;
-
-	pages = first_page();
-	while (pages)
-	{
-		if ((void *)pages < (void *)block && P_AFTER(pages) > (void *)block)
-			return (pages);
-		pages = pages->next;
-	}
-	return (NULL);
-}
-
-void		clean_page(t_page *page)
-{
-	size_t		unmap_size;
 	t_block		*block;
 
 	block = page->blocks;
 	while (block)
 	{
 		if (block->free == 0)
-			return ;
+			return (0);
 		block = block->next;
 	}
-	ft_putstr("UNMAPPING\n");
+
+	return (1);
+}
+
+void		unmap_page(t_page *page)
+{
+	size_t		unmap_size;
+	
 	delete_page(page);
 	unmap_size = page->size;
 	if (pagetype_from_pagesize(page->size) == LARGE)
@@ -46,31 +38,36 @@ void		clean_page(t_page *page)
 	munmap((void *)page, unmap_size);
 }
 
-
-void		free_block(t_block *block)
+/*
+**	This function checks if pages are empty to unmap them
+**	Won't unmap an empty page if it's the only one existing
+*/
+void		clean_pages(t_pagetype pagetype)
 {
-	block->free = 1;
-}
+	t_page		*pages;
+	char		first;
 
-t_block		*search_ptr(void *ptr)
-{
-	t_page	*pages;
-	t_block	*block;
-
+	first = 1;
 	pages = first_page();
 	while (pages)
 	{
-		block = pages->blocks;
-		while (block)
+		if (pages->type == pagetype)
 		{
-			if (B_DATA(block) == ptr)
-				return (block);
-			block = block->next;
+			if (page_is_free(pages))
+			{
+				pages->blocks = NULL;
+				pages->busy = 0;
+			}
+			if (first)
+				first = 0;
+			else
+				if (page_is_free(pages))
+					unmap_page(pages);
 		}
 		pages = pages->next;
 	}
-	return (NULL);
 }
+
 
 void		my_free(void *ptr)
 {
@@ -83,8 +80,11 @@ void		my_free(void *ptr)
 	searched = search_ptr(ptr);
 	if (searched)
 	{
-		free_block(searched);
+		searched->free = 1;
 		page = page_from_block(searched);
-		clean_page(page);
+		if (page->type == LARGE)
+			unmap_page(page);
+		else
+			clean_pages(page->type);
 	}
 }

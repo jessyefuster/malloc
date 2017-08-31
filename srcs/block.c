@@ -6,7 +6,7 @@
 /*   By: jfuster <jfuster@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/08/23 13:32:54 by jfuster           #+#    #+#             */
-/*   Updated: 2017/08/29 16:15:03 by jfuster          ###   ########.fr       */
+/*   Updated: 2017/08/30 17:11:38 by jfuster          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,12 +17,14 @@ t_block		*last_block(t_block *first)
 	t_block		*ptr;
 
 	ptr = first;
+	if (!ptr)
+		return (NULL);
 	while (ptr->next)
 		ptr = ptr->next;
 	return (ptr);
 }
 
-t_block		*add_block_in_mem(void *adress)
+t_block		*block_from_adress(void *adress)
 {
 	t_block		*block;
 
@@ -67,10 +69,10 @@ t_block		*add_block(t_page *page, size_t block_size)
 	if (ptr)
 	{
 		ptr = last_block(ptr);
-		block = add_block_in_mem((B_AFTER(ptr)));
+		block = block_from_adress((B_AFTER(ptr)));
 	}
 	else
-		block = add_block_in_mem(P_DATA(page));
+		block = block_from_adress(P_DATA(page));
 	init_block(block, block_size);
 	add_block_to_page(page, block);
 	return (block);
