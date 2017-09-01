@@ -37,17 +37,17 @@ int		main(void)
 	void	*addr3;
 
 	addr1 = my_malloc(10);
-	addr2 = my_malloc(10);
-	addr3 = my_malloc(10);
+	addr2 = my_malloc(20);
+	// addr3 = my_malloc(10);
 
 	show_alloc_mem();
-	printf("\n\n");
+/*	printf("\n\n");
 	void *addr4 = my_realloc(addr2, 5);
 	show_alloc_mem();
 	printf("\n\n");
 	my_free(addr4);
 	printf("%p\n", my_realloc(addr2, 12));
-	show_alloc_mem();
+	show_alloc_mem();*/
 
 
 	return (0);

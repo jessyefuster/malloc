@@ -12,7 +12,7 @@
 
 #include "../includes/malloc.h"
 
-void		*space_left(t_page *page, size_t size)
+/*void		*space_left(t_page *page, size_t size)
 {
 	void			*after_page;
 	void			*after_last_block;
@@ -29,10 +29,41 @@ void		*space_left(t_page *page, size_t size)
 	if (space_left >= size)
 		return (after_last_block);
 	return (NULL);
+	 5 6end 7 8 9 10start
+}*/
+void		*space_left(t_page *page, size_t size)
+{
+	void			*start;
+	void			*end;
+	t_block			*block;
+
+	block = page->blocks;
+	if (!block)
+	{
+		printf("not block\n");
+		start = P_DATA(page);
+		end = P_AFTER(page);
+		if ((size_t)(end - start) >= size)
+			return (start);
+	}
+	else
+	{
+		printf("block\n");
+		while (block)
+		{
+			end = (block->next ? (void *)(block->next) : P_AFTER(page));
+			start = (void *)block;
+			if ((size_t)(end - start) >= size)
+				return (start);
+			block = block->next;
+		}
+	}
+	return (NULL);
 }
 
 t_block		*search_free_block(size_t block_size)
 {
+	void		*space;
 	t_page		*page;
 
 	page = first_page();
@@ -40,8 +71,8 @@ t_block		*search_free_block(size_t block_size)
 	{
 		if (page->type == pagetype_from_block(block_size))
 		{
-			if (space_left(page, block_size + B_META_SIZE))
-				return (add_block(page, block_size));
+			if (space = space_left(page, block_size + B_META_SIZE))
+				return (add_block(page, space, block_size));
 		}
 		page = page->next;
 	}
@@ -58,7 +89,7 @@ t_block		*create_block(size_t block_size, t_page *page)
 		pagesize = pagesize_from_block(block_size);
 		page = create_page(pagesize);
 	}
-	block = add_block(page, block_size);
+	block = add_block(page, P_DATA(page), block_size);
 	return (block);
 }
 

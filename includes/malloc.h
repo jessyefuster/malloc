@@ -68,7 +68,7 @@ t_block				*last_block(t_block *first);
 void				init_block(t_block *block, size_t block_size);
 t_block				*block_from_address(void *adress);
 void				add_block_to_page(t_page *page, t_block *new_block);
-t_block				*add_block(t_page *page, size_t block_size);
+t_block				*add_block(t_page *page, void *space, size_t block_size);
 
 /*
 **	free.c
