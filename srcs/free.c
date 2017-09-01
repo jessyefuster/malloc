@@ -17,13 +17,8 @@ int			page_is_free(t_page *page)
 	t_block		*block;
 
 	block = page->blocks;
-	while (block)
-	{
-		if (block->free == 0)
-			return (0);
-		block = block->next;
-	}
-
+	if (block)
+		return (0);
 	return (1);
 }
 
@@ -53,11 +48,6 @@ void		clean_pages(t_pagetype pagetype)
 	{
 		if (pages->type == pagetype)
 		{
-			if (page_is_free(pages))
-			{
-				pages->blocks = NULL;
-				pages->busy = 0;
-			}
 			if (first)
 				first = 0;
 			else
@@ -80,8 +70,10 @@ void		my_free(void *ptr)
 	searched = search_ptr(ptr);
 	if (searched)
 	{
-		searched->free = 1;
+		// searched->free = 1;
 		page = page_from_block(searched);
+		page->busy -= searched->size;
+		delete_block_from_page(page, searched);
 		if (page->type == LARGE)
 			unmap_page(page);
 		else

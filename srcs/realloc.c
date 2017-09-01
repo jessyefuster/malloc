@@ -12,7 +12,7 @@
 
 #include "../includes/malloc.h"
 
-void	*ft_memcpy(void *dst, const void *src, size_t n)
+void		*ft_memcpy(void *dst, const void *src, size_t n)
 {
 	unsigned int		i;
 	unsigned char		*str;
@@ -29,39 +29,41 @@ void	*ft_memcpy(void *dst, const void *src, size_t n)
 	return (dst);
 }
 
-void	reuse_block(t_block *ptr, size_t new_size)
+void		reuse_block(t_block *block, size_t new_size)
 {
-	ptr->free = 0;
-	ptr->size = new_size;
+	block->size = new_size;
 }
 
-void	*my_realloc(void *ptr, size_t size)
+void		*malloc_and_copy(t_block *old, size_t size)
 {
-	void		*realloc;
+	void	*new;
+	
+	new = my_malloc(size);
+	ft_memcpy(new, B_DATA(old), MIN(size, old->size));
+	my_free(B_DATA(old));
+	return (new);
+}
+
+void		*my_realloc(void *ptr, size_t size)
+{
+	void		*new;
 	t_page		*page;
 	t_block		*searched;
 
-	searched = search_ptr(ptr);
 	if (!ptr)
 		return (my_malloc(size));
 	else if (!size)
-		my_free(searched);
-	else if (searched)
+		my_free(ptr);
+	else if ((searched = search_ptr(ptr)))
 	{
 		page = page_from_block(searched);
-		if (size <= searched->size || (pagetype_from_block(size) == page->type && searched->next == NULL && space_left(page, size - searched->size)))
+		if (page->type != LARGE && page->type == pagetype_from_block(size) && (size <= searched->size || space_left_after(page, searched, size)))
 		{
 			reuse_block(searched, size);
-			page->busy += size - searched->size;
 			return (ptr);
 		}
 		else
-		{
-			realloc = my_malloc(size);
-			ft_memcpy(realloc, ptr, MIN(size, searched->size));
-			my_free(ptr);
-			return (realloc);
-		}
+			return (malloc_and_copy(searched, size));
 	}
 	return (NULL);
 }

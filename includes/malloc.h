@@ -55,7 +55,6 @@ typedef struct		s_page
 typedef struct		s_block
 {
 	size_t			size;
-	char			free;
 
 	struct s_block	*next;
 }					t_block;
@@ -67,6 +66,7 @@ typedef struct		s_block
 t_block				*last_block(t_block *first);
 void				init_block(t_block *block, size_t block_size);
 t_block				*block_from_address(void *adress);
+void				delete_block_from_page(t_page *page, t_block *to_del);
 void				add_block_to_page(t_page *page, t_block *new_block);
 t_block				*add_block(t_page *page, void *space, size_t block_size);
 
@@ -81,7 +81,6 @@ void				my_free(void *ptr);
 /*
 **	malloc.c
 */
-void				*space_left(t_page *page, size_t size);
 t_block				*create_block(size_t size, t_page *page);
 t_block				*search_free_block(size_t size);
 void				*my_malloc(size_t size);
@@ -106,6 +105,8 @@ t_page				*first_page(void);
 */
 t_block				*search_ptr(void *ptr);
 t_page				*page_from_block(t_block *block);
+void				*space_left_after(t_page *page, t_block *block, size_t size);
+void				*space_left(t_page *page, size_t size);
 
 /*
 **	size.c

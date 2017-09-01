@@ -31,35 +31,7 @@
 	return (NULL);
 	 5 6end 7 8 9 10start
 }*/
-void		*space_left(t_page *page, size_t size)
-{
-	void			*start;
-	void			*end;
-	t_block			*block;
 
-	block = page->blocks;
-	if (!block)
-	{
-		printf("not block\n");
-		start = P_DATA(page);
-		end = P_AFTER(page);
-		if ((size_t)(end - start) >= size)
-			return (start);
-	}
-	else
-	{
-		printf("block\n");
-		while (block)
-		{
-			end = (block->next ? (void *)(block->next) : P_AFTER(page));
-			start = (void *)block;
-			if ((size_t)(end - start) >= size)
-				return (start);
-			block = block->next;
-		}
-	}
-	return (NULL);
-}
 
 t_block		*search_free_block(size_t block_size)
 {
@@ -71,7 +43,7 @@ t_block		*search_free_block(size_t block_size)
 	{
 		if (page->type == pagetype_from_block(block_size))
 		{
-			if (space = space_left(page, block_size + B_META_SIZE))
+			if ((space = space_left(page, block_size + B_META_SIZE)))
 				return (add_block(page, space, block_size));
 		}
 		page = page->next;
