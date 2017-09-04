@@ -38,10 +38,7 @@ void		*space_left_after(t_page *page, t_block *block, size_t size)
 	void			*end;
 
 	start = B_AFTER(block);
-	if (!(block->next))
-		end = P_AFTER(page);
-	else
-		end = (void *)(block->next);
+	end = (block->next ? (void *)(block->next) : P_AFTER(page));
 	if ((size_t)(end - start) >= size)
 		return (start);
 	return (NULL);
@@ -51,6 +48,7 @@ void		*space_left(t_page *page, size_t size)
 {
 	void			*start;
 	void			*end;
+	void			*space;
 	t_block			*block;
 
 	block = page->blocks;
@@ -65,10 +63,8 @@ void		*space_left(t_page *page, size_t size)
 	{
 		while (block)
 		{
-			end = (block->next ? (void *)(block->next) : P_AFTER(page));
-			start = B_AFTER(block);
-			if ((size_t)(end - start) >= size)
-				return (start);
+			if ((space = space_left_after(page, block, size)))
+				return (space);
 			block = block->next;
 		}
 	}

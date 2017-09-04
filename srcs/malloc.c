@@ -12,27 +12,6 @@
 
 #include "../includes/malloc.h"
 
-/*void		*space_left(t_page *page, size_t size)
-{
-	void			*after_page;
-	void			*after_last_block;
-	unsigned long	space_left;
-	t_block			*block;
-
-	block = last_block(page->blocks);
-	after_page = P_AFTER(page);
-	if (block)
-		after_last_block = B_AFTER(block);
-	else
-		after_last_block = P_DATA(page);
-	space_left = (unsigned long)(after_page - after_last_block);
-	if (space_left >= size)
-		return (after_last_block);
-	return (NULL);
-	 5 6end 7 8 9 10start
-}*/
-
-
 t_block		*search_free_block(size_t block_size)
 {
 	void		*space;

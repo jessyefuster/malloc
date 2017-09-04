@@ -51,11 +51,8 @@ void			show_alloc_mem(void)
 		block = page->blocks;
 		while (block)
 		{
-			// if (!block->free)
-			// {
-				show_block_info(B_DATA(block), B_AFTER(block) - 1, block->size);
-				total += block->size;
-			// }
+			show_block_info(B_DATA(block), B_AFTER(block) - 1, block->size);
+			total += block->size;
 			block = block->next;
 		}
 		page = page->next;

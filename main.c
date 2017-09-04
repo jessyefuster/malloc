@@ -31,7 +31,7 @@
 // }
 void	*ft_memset(void *dst, int c, size_t len)
 {
-	int i = 0;
+	size_t i = 0;
 
 	while (i < len)
 	{
@@ -55,12 +55,16 @@ int		main(void)
 
 	show_alloc_mem();
 	printf("\n\n");
-	my_realloc(addr2, 128);
+
+	addr2 = my_realloc(addr2, 126);
+	
 	show_alloc_mem();
 	printf("\n\n");
-	// my_free(addr4);
-	// printf("%p\n", my_realloc(addr4, 130));
+	
+	my_free(addr2);
+	my_realloc(addr2, 130);
 	my_malloc(129);
+	
 	show_alloc_mem();
 
 	// ft_memset(addr1, '1', 10);

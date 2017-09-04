@@ -12,18 +12,6 @@
 
 #include "../includes/malloc.h"
 
-t_block		*last_block(t_block *first)
-{
-	t_block		*ptr;
-
-	ptr = first;
-	if (!ptr)
-		return (NULL);
-	while (ptr->next)
-		ptr = ptr->next;
-	return (ptr);
-}
-
 t_block		*block_from_adress(void *adress)
 {
 	t_block		*block;
@@ -49,6 +37,8 @@ void		delete_block_from_page(t_page *page, t_block *to_del)
 
 void		add_block_to_page(t_page *page, t_block *new_block)
 {
+	void		*next_adress;
+	int			between;
 	t_block		*ptr;
 
 	ptr = page->blocks;
@@ -58,20 +48,13 @@ void		add_block_to_page(t_page *page, t_block *new_block)
 	{
 		while (ptr)
 		{
-			if (ptr->next)
+			next_adress = ptr->next ? (void *)ptr->next : P_AFTER(page);
+			between = (void *)ptr < (void *)new_block &&
+						(void *)new_block < next_adress;
+			if (between)
 			{
-				if ((void *)ptr < (void *)new_block && (void *)new_block < (void *)ptr->next)
-				{
-					new_block->next = ptr->next;
-					ptr->next = new_block;
-				}
-			}
-			else
-			{
-				if ((void *)ptr < (void *)new_block && (void *)new_block < P_AFTER(page))
-				{
-					ptr->next = new_block;
-				}
+				new_block->next = ptr->next;
+				ptr->next = new_block;
 			}
 			ptr = ptr->next;
 		}

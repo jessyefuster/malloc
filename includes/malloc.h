@@ -33,8 +33,6 @@
 
 # define MIN(size_a, size_b)	(size_a >= size_b ? size_b : size_a)
 
-// # define mmap(a, b, c, d, e, f)	NULL
-
 typedef enum		e_pagetype
 {
 	TINY,
@@ -63,7 +61,6 @@ typedef struct		s_block
 /*
 **	block.c
 */
-t_block				*last_block(t_block *first);
 void				init_block(t_block *block, size_t block_size);
 t_block				*block_from_address(void *adress);
 void				delete_block_from_page(t_page *page, t_block *to_del);
@@ -126,9 +123,8 @@ void				show_alloc_mem(void);
 **	tools.c
 */
 void				ft_putstr(char *str);
-char				*ft_utob(unsigned long long value, int base, char *base_str);
 void				ft_put_utob(unsigned long long value, int base, char *base_str);
 
 
-void	*my_realloc(void *ptr, size_t size);
+void				*my_realloc(void *ptr, size_t size);
 #endif

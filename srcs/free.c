@@ -14,10 +14,7 @@
 
 int			page_is_free(t_page *page)
 {
-	t_block		*block;
-
-	block = page->blocks;
-	if (block)
+	if (page->blocks)
 		return (0);
 	return (1);
 }
@@ -25,7 +22,7 @@ int			page_is_free(t_page *page)
 void		unmap_page(t_page *page)
 {
 	size_t		unmap_size;
-	
+
 	delete_page(page);
 	unmap_size = page->size;
 	if (pagetype_from_pagesize(page->size) == LARGE)
@@ -37,6 +34,7 @@ void		unmap_page(t_page *page)
 **	This function checks if pages are empty to unmap them
 **	Won't unmap an empty page if it's the only one existing
 */
+
 void		clean_pages(t_pagetype pagetype)
 {
 	t_page		*pages;
@@ -50,14 +48,12 @@ void		clean_pages(t_pagetype pagetype)
 		{
 			if (first)
 				first = 0;
-			else
-				if (page_is_free(pages))
-					unmap_page(pages);
+			else if (page_is_free(pages))
+				unmap_page(pages);
 		}
 		pages = pages->next;
 	}
 }
-
 
 void		my_free(void *ptr)
 {
@@ -66,11 +62,9 @@ void		my_free(void *ptr)
 
 	if (!ptr)
 		return ;
-
 	searched = search_ptr(ptr);
 	if (searched)
 	{
-		// searched->free = 1;
 		page = page_from_block(searched);
 		page->busy -= searched->size;
 		delete_block_from_page(page, searched);

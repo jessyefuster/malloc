@@ -37,7 +37,7 @@ void		reuse_block(t_block *block, size_t new_size)
 void		*malloc_and_copy(t_block *old, size_t size)
 {
 	void	*new;
-	
+
 	new = my_malloc(size);
 	ft_memcpy(new, B_DATA(old), MIN(size, old->size));
 	my_free(B_DATA(old));
@@ -46,7 +46,6 @@ void		*malloc_and_copy(t_block *old, size_t size)
 
 void		*my_realloc(void *ptr, size_t size)
 {
-	void		*new;
 	t_page		*page;
 	t_block		*searched;
 
@@ -57,7 +56,8 @@ void		*my_realloc(void *ptr, size_t size)
 	else if ((searched = search_ptr(ptr)))
 	{
 		page = page_from_block(searched);
-		if (page->type != LARGE && page->type == pagetype_from_block(size) && (size <= searched->size || space_left_after(page, searched, size)))
+		if (page->type != LARGE && page->type == pagetype_from_block(size) &&
+			(size <= searched->size || space_left_after(page, searched, size)))
 		{
 			reuse_block(searched, size);
 			return (ptr);
