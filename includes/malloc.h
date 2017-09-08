@@ -14,7 +14,6 @@
 # define MALLOC_H
 
 # include <string.h>
-// # include <stdio.h>
 # include <unistd.h>
 # include <sys/mman.h>
 
@@ -57,7 +56,6 @@ typedef struct		s_block
 	struct s_block	*next;
 }					t_block;
 
-
 /*
 **	block.c
 */
@@ -92,6 +90,14 @@ void				add_page(t_page *new_page);
 void				delete_page(t_page *to_del);
 
 /*
+**	realloc.c
+*/
+void				*ft_memcpy(void *dst, const void *src, size_t n);
+void				reuse_block(t_block *block, size_t new_size);
+void				*malloc_and_copy(t_block *old, size_t size);
+void				*realloc(void *ptr, size_t size);
+
+/*
 **	root.c
 */
 t_page				**real_first_page(void);
@@ -102,7 +108,8 @@ t_page				*first_page(void);
 */
 t_block				*search_ptr(void *ptr);
 t_page				*page_from_block(t_block *block);
-void				*space_left_after(t_page *page, t_block *block, size_t size);
+void				*space_left_after(t_page *page, t_block *block,
+										size_t size);
 void				*space_left(t_page *page, size_t size);
 
 /*
@@ -123,8 +130,7 @@ void				show_alloc_mem(void);
 **	tools.c
 */
 void				ft_putstr(char *str);
-void				ft_put_utob(unsigned long long value, int base, char *base_str);
+void				ft_put_utob(unsigned long long value, int base,
+									char *base_str);
 
-
-void				*realloc(void *ptr, size_t size);
 #endif
