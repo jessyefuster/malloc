@@ -55,7 +55,7 @@ void		clean_pages(t_pagetype pagetype)
 	}
 }
 
-void		my_free(void *ptr)
+void		free(void *ptr)
 {
 	t_block		*searched;
 	t_page		*page;

@@ -14,7 +14,7 @@
 # define MALLOC_H
 
 # include <string.h>
-# include <stdio.h>
+// # include <stdio.h>
 # include <unistd.h>
 # include <sys/mman.h>
 
@@ -73,14 +73,14 @@ t_block				*add_block(t_page *page, void *space, size_t block_size);
 int					page_is_free(t_page *page);
 void				unmap_page(t_page *page);
 void				clean_pages(t_pagetype pagetype);
-void				my_free(void *ptr);
+void				free(void *ptr);
 
 /*
 **	malloc.c
 */
 t_block				*create_block(size_t size, t_page *page);
 t_block				*search_free_block(size_t size);
-void				*my_malloc(size_t size);
+void				*malloc(size_t size);
 
 /*
 **	page.c
@@ -126,5 +126,5 @@ void				ft_putstr(char *str);
 void				ft_put_utob(unsigned long long value, int base, char *base_str);
 
 
-void				*my_realloc(void *ptr, size_t size);
+void				*realloc(void *ptr, size_t size);
 #endif

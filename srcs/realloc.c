@@ -38,21 +38,21 @@ void		*malloc_and_copy(t_block *old, size_t size)
 {
 	void	*new;
 
-	new = my_malloc(size);
+	new = malloc(size);
 	ft_memcpy(new, B_DATA(old), MIN(size, old->size));
-	my_free(B_DATA(old));
+	free(B_DATA(old));
 	return (new);
 }
 
-void		*my_realloc(void *ptr, size_t size)
+void		*realloc(void *ptr, size_t size)
 {
 	t_page		*page;
 	t_block		*searched;
 
 	if (!ptr)
-		return (my_malloc(size));
+		return (malloc(size));
 	else if (!size)
-		my_free(ptr);
+		free(ptr);
 	else if ((searched = search_ptr(ptr)))
 	{
 		page = page_from_block(searched);

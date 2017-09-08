@@ -20,7 +20,16 @@ CFLAGS = -Wall -Wextra -Werror
 
 SRCS_PATH = srcs/
 
-SRCS_NAME = malloc.c
+SRCS_NAME = block.c \
+			free.c \
+			malloc.c \
+			page.c \
+			realloc.c \
+			root.c \
+			search.c \
+			show_mem.c \
+			size.c \
+			tools.c
 
 SRCS = $(addprefix $(SRCS_PATH), $(SRCS_NAME))
 

@@ -44,7 +44,7 @@ t_block		*create_block(size_t block_size, t_page *page)
 	return (block);
 }
 
-void		*my_malloc(size_t size)
+void		*malloc(size_t size)
 {
 	t_block		*new_block;
 

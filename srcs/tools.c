@@ -41,13 +41,11 @@ static int		ft_len_num_unsigned(unsigned long long value, int base)
 	return (len + 1);
 }
 
-void			ft_put_utob(unsigned long long value, int base, char *base_str)
+static void		ft_put_utob_core(unsigned long long value, int base, \
+	char *base_str, int len)
 {
-	char	*str;
-	int		len;
+	char	str[len];
 
-	len = ft_len_num_unsigned(value, base);
-	str = (char *)malloc(sizeof(char) * (len + 1));
 	str[len] = '\0';
 	len--;
 	while (len >= 0)
@@ -59,4 +57,12 @@ void			ft_put_utob(unsigned long long value, int base, char *base_str)
 	if (base == 16)
 		ft_putstr("0x");
 	ft_putstr(str);
+}
+
+void			ft_put_utob(unsigned long long value, int base, char *base_str)
+{
+	int		len;
+
+	len = ft_len_num_unsigned(value, base);
+	ft_put_utob_core(value, base, base_str, len);
 }
