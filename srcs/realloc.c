@@ -33,7 +33,21 @@ void		reuse_block(t_block *block, size_t new_size)
 {
 	block->size = new_size;
 }
+/*
+CORRECTION ?
+void		*malloc_and_copy(t_block *old, size_t size)
+{
+	void	*new;
 
+	new = malloc(size);
+	if (new)
+	{
+		ft_memcpy(new, B_DATA(old), MIN(size, old->size));
+		free(B_DATA(old));
+	}
+	return (new);
+}
+*/
 void		*malloc_and_copy(t_block *old, size_t size)
 {
 	void	*new;
