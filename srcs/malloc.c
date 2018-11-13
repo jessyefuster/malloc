@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   malloc.c                                           :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: jfuster <jfuster@student.42.fr>            +#+  +:+       +#+        */
+/*   By: jessyefuster <jessyefuster@student.42.fr>  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/08/16 12:15:35 by jfuster           #+#    #+#             */
-/*   Updated: 2017/08/30 17:12:38 by jfuster          ###   ########.fr       */
+/*   Updated: 2018/11/13 17:21:31 by jessyefuster     ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -49,7 +49,7 @@ void		*malloc(size_t size)
 	t_block		*new_block;
 
 	new_block = search_free_block(size);
-	if (!new_block)
+	if (pagetype_from_block(size) == LARGE || !new_block)
 		new_block = create_block(size, NULL);
 	if (!new_block)
 		return (NULL);
