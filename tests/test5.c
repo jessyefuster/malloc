@@ -1,26 +1,24 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   test0.c                                            :+:      :+:    :+:   */
+/*   test5.c                                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: jessyefuster <jessyefuster@student.42.fr>  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2017/08/16 15:09:37 by jfuster           #+#    #+#             */
-/*   Updated: 2018/11/13 15:34:43 by jessyefuster     ###   ########.fr       */
+/*   Created: 2018/11/14 15:25:04 by jessyefuster      #+#    #+#             */
+/*   Updated: 2018/11/14 15:33:09 by jessyefuster     ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "includes/malloc.h"
+#include "../includes/malloc.h"
 
-int		main()
+int main()
 {
-	int i;
-	char *addr;
-
-	i = 0;
-	while (i < 1024)
-	{
-		i++;
-	}
+	malloc(1024);
+	malloc(1024 * 32);
+	malloc(1024 * 1024);
+	malloc(1024 * 1024 * 16);
+	malloc(1024 * 1024 * 128);
+	show_alloc_mem();
 	return (0);
 }

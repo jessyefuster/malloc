@@ -1,36 +1,28 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   test3.c                                            :+:      :+:    :+:   */
+/*   test1.c                                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: jessyefuster <jessyefuster@student.42.fr>  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2018/11/13 15:51:12 by jessyefuster      #+#    #+#             */
-/*   Updated: 2018/11/13 17:19:11 by jessyefuster     ###   ########.fr       */
+/*   Created: 2017/08/16 15:09:37 by jfuster           #+#    #+#             */
+/*   Updated: 2018/11/14 15:28:04 by jessyefuster     ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include <unistd.h>
-#include <string.h>
-#include "includes/malloc.h"
+#include "../includes/malloc.h"
 
-#define M (1024 * 1024)
-
-void print(char *s)
+int		main()
 {
-	write(1, s, strlen(s));
-}
+	int i;
+	char *addr;
 
-int main()
-{
-	char *addr1;
-	char *addr3;
-
-	addr1 = (char*)malloc(16*M);
-	strcpy(addr1, "Bonjours\n");
-	print(addr1);
-	addr3 = (char*)realloc(addr1, 128*M);
-	addr3[127*M] = 42;
-	print(addr3);
+	i = 0;
+	while (i < 1024)
+	{
+		addr = (char*)malloc(1024);
+		addr[0] = 42;
+		i++;
+	}
 	return (0);
 }
