@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   realloc.c                                          :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: jessyefuster <jessyefuster@student.42.fr>  +#+  +:+       +#+        */
+/*   By: jfuster <jfuster@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/08/30 11:35:01 by jfuster           #+#    #+#             */
-/*   Updated: 2018/11/13 17:22:26 by jessyefuster     ###   ########.fr       */
+/*   Updated: 2018/12/03 16:07:32 by jfuster          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -58,7 +58,7 @@ void		*realloc(void *ptr, size_t size)
 		free(ptr);
 	else if ((searched = search_ptr(ptr)))
 	{
-		page = page_from_block(searched);			
+		page = page_from_block(searched);
 		if (page->type != LARGE && page->type == pagetype_from_block(size) &&
 			(size <= searched->size || space_left_after(page, searched, size)))
 		{

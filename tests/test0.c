@@ -3,19 +3,19 @@
 /*                                                        :::      ::::::::   */
 /*   test0.c                                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: jessyefuster <jessyefuster@student.42.fr>  +#+  +:+       +#+        */
+/*   By: jfuster <jfuster@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/08/16 15:09:37 by jfuster           #+#    #+#             */
-/*   Updated: 2018/11/14 15:27:37 by jessyefuster     ###   ########.fr       */
+/*   Updated: 2018/12/03 16:08:23 by jfuster          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../includes/malloc.h"
 
-int		main()
+int		main(void)
 {
-	int i;
-	char *addr;
+	int		i;
+	char	*addr;
 
 	i = 0;
 	while (i < 1024)
